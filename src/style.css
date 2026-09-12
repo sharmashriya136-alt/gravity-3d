@@ -1,0 +1,645 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap');
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#f4f6fb;background:#080b13;color-scheme:dark;font-size:18px;font-synthesis:none;--muted:#a7b2c5;--border:#ffffff19;--accent:#b9f5d0}
+*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button,select,input:not([type=checkbox]):not([type=range]){min-height:48px;border:1px solid var(--border);border-radius:10px;background:#1b2230;color:#f4f6fb;padding:10px 12px}button{cursor:pointer;font-weight:600;transition:background .15s,border .15s}button:hover{background:#2a3546;border-color:#8bbd9b}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:3px}button.primary{background:var(--accent);color:#153324;border-color:var(--accent)}button.danger{color:#ffb6af;background:#41272c;border-color:#7d4349}.wide{width:100%;margin-top:14px}h1,h2,h3,p{margin:0}h2{font-size:27px;letter-spacing:-1px}h3{font-size:22px;letter-spacing:-.4px}header{height:92px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;border-bottom:1px solid var(--border);background:#0a0f19}.brand{color:inherit;text-decoration:none;font-size:28px;letter-spacing:6px;font-weight:700}.brand span{display:block;font-size:13px;letter-spacing:2.4px;color:var(--muted);margin-top:3px}.live{display:flex;align-items:center;gap:10px;font-size:17px;color:#c4d2cc}.live i{height:8px;width:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 15px #b9f5d077}#viewport{position:absolute;top:92px;left:0;bottom:0;right:390px;overflow:hidden}canvas{display:block;width:100%;height:100%;touch-action:none}#loading{position:absolute;inset:0;display:grid;place-content:center;background:#080b13;z-index:8;text-align:center;padding:30px}#loading[hidden]{display:none}.panel{position:absolute;right:0;top:92px;bottom:0;width:390px;overflow:auto;background:#101622;border-left:1px solid var(--border);padding:26px 22px}.panel-heading{margin-bottom:22px}.eyebrow{font-size:13px;letter-spacing:2px;color:#abc2b4;display:block;margin-bottom:8px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.row button{font-size:17px}.section{border-top:1px solid var(--border);padding-top:22px;margin:22px 0}.section-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}#count{color:var(--muted);font-size:16px}label{display:flex;align-items:center;justify-content:space-between;margin:16px 0 8px;font-size:18px}input[type=range]{width:100%;accent-color:var(--accent);height:24px}.checks{display:flex;gap:20px}.checks label{font-size:16px;gap:7px}input[type=checkbox]{width:18px;height:18px;accent-color:var(--accent)}select{width:100%}.name-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.name-row input{width:100%}#inspector .row{margin-top:14px}#body-list{display:grid;gap:7px;max-height:215px;overflow:auto}.body-item{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:transparent}.body-item[aria-pressed=true]{background:#25372e;border-color:#81c79b}.body-item .dot{width:24px;height:24px;flex-shrink:0;border-radius:50%;box-shadow:inset -5px -3px 8px #0007}.body-item .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.small{font-size:15px;color:var(--muted);line-height:1.6;margin-top:12px}.scene-title{position:absolute;left:36px;top:32px;pointer-events:none;z-index:2}.scene-title h1{font-size:clamp(30px,4.2vw,60px);line-height:1.06;letter-spacing:-2px;font-weight:500;margin:12px 0}.scene-title p{font-size:18px;color:var(--muted)}body.exploring .scene-title{display:none}.view-tools{position:absolute;bottom:58px;left:50%;transform:translateX(-50%);display:flex;gap:8px;z-index:3;white-space:nowrap}.view-tools button{background:#111a26d9;backdrop-filter:blur(16px);font-size:17px}#view-caption{position:absolute;bottom:20px;width:100%;text-align:center;font-size:15px;color:#bdc7d7;pointer-events:none}#labels{position:absolute;inset:0;pointer-events:none;overflow:hidden}.planet-label{position:absolute;transform:translate(-50%,-50%);font-size:18px;font-weight:600;white-space:nowrap;text-shadow:0 2px 5px #000,0 0 10px #000}.planet-label.selected{color:var(--accent)}#toast{position:fixed;bottom:24px;left:24px;max-width:min(520px,90vw);background:#20382c;border:1px solid #6eaa85;padding:14px 20px;border-radius:12px;z-index:20;opacity:0;pointer-events:none;transition:opacity .2s}#toast.show{opacity:1}dialog{border:1px solid #586075;border-radius:18px;padding:28px;background:#141d2c;color:#f4f6fb;max-width:460px;width:calc(100% - 32px)}dialog::backdrop{background:#0009;backdrop-filter:blur(6px)}dialog p{line-height:1.6;margin:16px 0 24px}
+/* Keep secondary information readable as well as the primary controls. */
+.eyebrow,.small,.checks label,#count,.brand span,#view-caption{font-size:16px}.row button,.view-tools button{font-size:18px}.planet-label{font-size:20px}
+@media(max-width:1000px){#viewport{right:360px}.panel{width:360px;padding:22px 16px}.scene-title{left:24px}.scene-title p{max-width:240px}.row{gap:6px}.row button{font-size:18px}}
+@media(max-width:700px){body{overflow:auto}header{height:80px;padding:0 18px}.brand{font-size:24px}.live{font-size:14px}#viewport{position:relative;top:auto;right:auto;height:64svh;min-height:430px}.panel{position:relative;top:auto;bottom:auto;width:100%;border-left:0;border-top:1px solid var(--border)}.scene-title h1{font-size:34px}.scene-title{top:20px}.scene-title p{display:none}.view-tools{bottom:45px;gap:5px}.view-tools button{font-size:15px;padding:9px}#view-caption{font-size:13px;bottom:16px}.panel .row button{font-size:18px}#toast{bottom:12px;left:12px}}
+
+/* =========================================
+   GRAVITY — SPACE CONSOLE THEME
+   ========================================= */
+
+   :root {
+    --accent: #b7deee;
+    --muted: #a3b7c3;
+    --border: #526e7d;
+  
+    font-family: "Lora", Georgia, serif;
+    color: #e4f0f5;
+    background: #03070c;
+  }
+  
+  /* Header */
+  
+  header {
+    background: linear-gradient(180deg, #111b23, #080e15);
+    border-bottom: 1px solid #526e7d;
+  }
+  
+  .brand {
+    color: #d7edf6;
+    letter-spacing: 7px;
+    font-weight: 500;
+  }
+  
+  .brand span,
+  .eyebrow {
+    color: #9fbcca;
+    letter-spacing: 2px;
+  }
+  
+  .live {
+    color: #b7ccd7;
+  }
+  
+  .live i {
+    background: #b8def0;
+    box-shadow: 0 0 10px #84c7e866;
+  }
+  
+  /* Let the universe be the main visual */
+  
+  .scene-title {
+    display: none;
+  }
+  
+  /* Main control panel */
+  
+  .panel {
+    background:
+      linear-gradient(90deg, #9ac8dd08, transparent 20%),
+      linear-gradient(180deg, #15212bee, #080f17f5);
+  
+    border-left: 1px solid #698897;
+    box-shadow:
+      inset 5px 0 0 #060c12,
+      inset 6px 0 0 #334d5a,
+      -15px 0 45px #0005;
+  
+    scrollbar-width: thin;
+    scrollbar-color: #526c7b #0a121a;
+  }
+  
+  .panel::-webkit-scrollbar,
+  #body-list::-webkit-scrollbar {
+    width: 7px;
+  }
+  
+  .panel::-webkit-scrollbar-track,
+  #body-list::-webkit-scrollbar-track {
+    background: #0a121a;
+  }
+  
+  .panel::-webkit-scrollbar-thumb,
+  #body-list::-webkit-scrollbar-thumb {
+    background: #526c7b;
+    border: 2px solid #0a121a;
+  }
+  
+  .panel-heading {
+    border-bottom: 1px solid #536f7c;
+    padding-bottom: 18px;
+  }
+  
+  h2,
+  h3 {
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  
+  h2 {
+    font-size: 28px;
+  }
+  
+  h3 {
+    font-size: 23px;
+  }
+  
+  .section {
+    border-top: 1px solid #425d6b;
+  }
+  
+  label,
+  .small {
+    color: #b5c7d1;
+  }
+  
+  /* Framed console buttons */
+  
+  button,
+  .view-tools button,
+  .body-item {
+    position: relative;
+    min-height: 52px;
+    border-radius: 2px;
+  
+    border: 1px solid #668897;
+    background: linear-gradient(
+      180deg,
+      #31434e 0%,
+      #202f39 48%,
+      #16232c 100%
+    );
+  
+    color: #dceef7;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.35px;
+  
+    box-shadow:
+      inset 0 0 0 3px #0a131b,
+      inset 0 0 0 4px #64818f66,
+      inset 0 7px 12px #d4f0ff0a,
+      0 3px 8px #0005;
+  
+    transition:
+      border-color 150ms ease,
+      background 150ms ease,
+      box-shadow 150ms ease;
+  }
+  
+  /* Small corner brackets */
+  
+  button::before,
+  button::after {
+    content: "";
+    position: absolute;
+    width: 11px;
+    height: 11px;
+    pointer-events: none;
+  }
+  
+  button::before {
+    top: -2px;
+    left: -2px;
+    border-top: 2px solid #b5d6e5;
+    border-left: 2px solid #b5d6e5;
+  }
+  
+  button::after {
+    right: -2px;
+    bottom: -2px;
+    border-right: 2px solid #b5d6e5;
+    border-bottom: 2px solid #b5d6e5;
+  }
+  
+  button:hover,
+  .view-tools button:hover {
+    background: linear-gradient(180deg, #405966, #233844);
+    border-color: #b9e5f7;
+  
+    box-shadow:
+      inset 0 0 0 3px #0a131b,
+      inset 0 0 0 4px #a3d4e788,
+      0 0 14px #80c6e51a;
+  }
+  
+  button:active {
+    background: #172630;
+    box-shadow: inset 0 2px 10px #0008;
+  }
+  
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  /* Primary actions use the same console language */
+  
+  button.primary {
+    color: #e4f4fc;
+    border: 1px solid #8eb5c7;
+    background: linear-gradient(180deg, #3a5665, #213642);
+  }
+  
+  button.primary:hover {
+    background: linear-gradient(180deg, #4a6c7d, #2a4655);
+    border-color: #d0eeff;
+  }
+  
+  /* Destructive actions */
+  
+  button.danger {
+    color: #ffd2ca;
+    border: 1px solid #a55b56;
+    background: linear-gradient(180deg, #5c3437, #301b23);
+  }
+  
+  button.danger::before,
+  button.danger::after {
+    border-color: #e99b91;
+  }
+  
+  button.danger:hover {
+    background: linear-gradient(180deg, #754146, #44242b);
+    border-color: #ffc0b4;
+  }
+  
+  /* Planet selector */
+  
+  .body-item {
+    padding: 13px 15px;
+    min-height: 58px;
+    margin: 2px 0;
+  }
+  
+  .body-item[aria-pressed="true"] {
+    color: #ffe0b2;
+    border-color: #bf8c4d;
+    background: linear-gradient(180deg, #493b2c, #28221c);
+  
+    box-shadow:
+      inset 0 0 0 3px #15120f,
+      inset 0 0 0 4px #b58a4a66,
+      0 0 14px #cd923512;
+  }
+  
+  .body-item[aria-pressed="true"]::before,
+  .body-item[aria-pressed="true"]::after {
+    border-color: #e9bd7c;
+  }
+  
+  .body-item .dot {
+    width: 29px;
+    height: 29px;
+  }
+  
+  .planet-label {
+    color: #d4e6ef;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+  
+  .planet-label.selected {
+    color: #f2c98d;
+  }
+  
+  /* Text fields and dropdowns */
+  
+  select,
+  input:not([type="checkbox"]):not([type="range"]) {
+    border-radius: 2px;
+    border: 1px solid #5a7786;
+    background: #0c1720;
+    color: #e4f0f5;
+    font-size: 18px;
+  
+    box-shadow:
+      inset 0 2px 8px #0006,
+      inset 0 0 0 3px #060d1466;
+  }
+  
+  select {
+    min-height: 50px;
+  }
+  
+  select option {
+    background: #14212b;
+    color: #e4f0f5;
+  }
+  
+  input[type="range"],
+  input[type="checkbox"] {
+    accent-color: #aacfe0;
+  }
+  
+  /* View controls beneath the scene */
+  
+  .view-tools {
+    padding: 10px;
+    gap: 12px;
+    background: #08121bd9;
+    border: 1px solid #455f6d;
+    backdrop-filter: blur(12px);
+  }
+  
+  .view-tools button {
+    font-size: 18px;
+  }
+  
+  #view-caption {
+    color: #a5bdca;
+  }
+  
+  /* Confirmation windows */
+  
+  dialog {
+    border-radius: 2px;
+    border: 1px solid #8bafc0;
+    background: linear-gradient(145deg, #263944f5, #0e1822fa);
+  
+    box-shadow:
+      inset 0 0 0 5px #0a121b,
+      inset 0 0 0 6px #587481,
+      0 20px 80px #000b;
+  }
+  
+  dialog::backdrop {
+    background: #0009;
+    backdrop-filter: blur(3px);
+  }
+  
+  /* Status messages */
+  
+  #toast {
+    border-radius: 2px;
+    background: #172b37;
+    border-color: #8dafbf;
+    color: #dfedf5;
+  }
+  
+  /* Keyboard focus stays clearly visible */
+  
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #f1c789;
+    outline-offset: 4px;
+  }
+  
+  /* Smaller screens */
+  
+  @media (max-width: 700px) {
+    .panel {
+      border-left: 0;
+      border-top: 1px solid #698897;
+      box-shadow: inset 0 4px 0 #080f16;
+    }
+  
+    .view-tools {
+      max-width: calc(100% - 16px);
+      gap: 6px;
+      padding: 7px;
+    }
+  
+    .view-tools button {
+      font-size: 16px;
+      padding: 8px;
+      min-height: 48px;
+    }
+  }
+  /* GRAVITY — quieter observatory styling */
+
+:root {
+    --accent: #d7c49e;
+    --muted: #a8afb5;
+    --border: #ffffff1c;
+  
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    color: #edeae3;
+  }
+  
+  /* Keep Lora where it has the most impact */
+  h1,
+  h2,
+  h3,
+  .body-item .name,
+  .planet-label {
+    font-family: "Lora", Georgia, serif;
+  }
+  
+  h2 {
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.6px;
+  }
+  
+  h3 {
+    font-size: 23px;
+    font-weight: 400;
+    letter-spacing: -0.3px;
+  }
+  
+  .eyebrow,
+  .brand span {
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    color: #b9ac91;
+  }
+  
+  /* Dark, restrained surfaces */
+  header {
+    background: #0b1016;
+    border-color: #ffffff14;
+  }
+  
+  .panel {
+    padding: 28px 24px;
+    background: linear-gradient(160deg, #141b23, #0b1118);
+    border-left: 1px solid #ffffff1c;
+    box-shadow: none;
+    overflow-x: hidden;
+  }
+  
+  .panel-heading {
+    padding-bottom: 22px;
+    margin-bottom: 22px;
+    border-color: #ffffff16;
+  }
+  
+  .section {
+    margin: 26px 0;
+    padding-top: 24px;
+    border-color: #ffffff16;
+  }
+  
+  label {
+    font-size: 18px;
+    font-weight: 400;
+    color: #c1c6cb;
+  }
+  
+  .small {
+    font-size: 16px;
+    line-height: 1.65;
+    color: #9aa4ae;
+  }
+  
+  /* Remove the heavy brackets */
+  button::before,
+  button::after {
+    display: none;
+  }
+  
+  /* Secondary controls */
+  button,
+  .view-tools button {
+    border: 1px solid #ffffff26;
+    border-radius: 5px;
+    background: #ffffff04;
+    box-shadow: none;
+    color: #e0e4e7;
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0;
+    min-height: 50px;
+  }
+  
+  button:hover,
+  .view-tools button:hover {
+    background: #ffffff0c;
+    border-color: #d7c49e88;
+    box-shadow: none;
+  }
+  
+  button:active {
+    background: #ffffff12;
+    box-shadow: none;
+  }
+  
+  /* A warm accent only for the main actions */
+  button.primary {
+    background: #d7c49e;
+    border-color: #d7c49e;
+    color: #202323;
+    box-shadow: none;
+  }
+  
+  button.primary:hover {
+    background: #e5d5b6;
+    border-color: #e5d5b6;
+  }
+  
+  /* Destruction stays visually distinct */
+  button.danger {
+    background: #b4575710;
+    border-color: #b9747455;
+    color: #e5a8a1;
+  }
+  
+  button.danger:hover {
+    background: #b4575724;
+    border-color: #ce918b;
+  }
+  
+  /* Planet list: quiet rows instead of large framed cards */
+  #body-list {
+    display: grid;
+    gap: 4px;
+    max-height: 290px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 4px;
+    min-width: 0;
+  }
+  
+  .body-item {
+    min-width: 0;
+    width: 100%;
+    min-height: 58px;
+    margin: 0;
+    padding: 12px;
+    gap: 14px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: transparent;
+    box-shadow: none;
+  }
+  
+  .body-item:hover {
+    background: #ffffff06;
+    border-color: #ffffff16;
+  }
+  
+  .body-item[aria-pressed="true"] {
+    background: #d7c49e0c;
+    border-color: #d7c49e35;
+    color: #ead7b4;
+    box-shadow: inset 2px 0 0 #d7c49e;
+  }
+  
+  .body-item .name {
+    font-size: 21px;
+    font-weight: 400;
+  }
+  
+  .body-item .dot {
+    width: 27px;
+    height: 27px;
+    flex-shrink: 0;
+  }
+  
+  /* Less bulky inputs */
+  select,
+  input:not([type="checkbox"]):not([type="range"]) {
+    min-width: 0;
+    max-width: 100%;
+    min-height: 50px;
+    border: 1px solid #ffffff24;
+    border-radius: 4px;
+    background: #080e1580;
+    box-shadow: none;
+    color: #e3e5e7;
+    font-family: "Avenir Next", "Segoe UI", sans-serif;
+    font-size: 18px;
+  }
+  
+  select option {
+    background: #141b23;
+  }
+  
+  .row,
+  .name-row {
+    min-width: 0;
+  }
+  
+  .row > *,
+  .name-row > * {
+    min-width: 0;
+  }
+  
+  input[type="range"],
+  input[type="checkbox"] {
+    accent-color: #d7c49e;
+  }
+  
+  /* Subtle scrollbars */
+  .panel,
+  #body-list {
+    scrollbar-width: thin;
+    scrollbar-color: #626b73 #0000;
+  }
+  
+  .panel::-webkit-scrollbar,
+  #body-list::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  .panel::-webkit-scrollbar-track,
+  #body-list::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .panel::-webkit-scrollbar-thumb,
+  #body-list::-webkit-scrollbar-thumb {
+    background: #626b73;
+    border: none;
+    border-radius: 8px;
+  }
+  
+  /* Matching floating controls */
+  .view-tools {
+    background: #0d141bd9;
+    border: 1px solid #ffffff20;
+    border-radius: 7px;
+    padding: 8px;
+    gap: 8px;
+  }
+  
+  .planet-label.selected {
+    color: #ead7b4;
+  }
+  
+  button:focus-visible,
+  input:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #d7c49e;
+    outline-offset: 3px;
+  }
+  
+  @media (max-width: 700px) {
+    .panel {
+      padding: 24px 20px;
+      border-left: 0;
+      border-top: 1px solid #ffffff1c;
+    }
+  
+    .view-tools button {
+      font-size: 16px;
+    }
+  }

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#080b13" />
+  <meta name="description" content="Build a universe. Explore, name, and shape textured worlds in an interactive 3D gravity sandbox." />
+  <title>Gravity — Your universe, in motion</title>
+</head>
+<body>
+  <main id="app">
+    <header><a class="brand" href="./">GRAVITY<span>3D ORBITAL SANDBOX</span></a><div class="live"><i></i><span id="state">Simulation live</span></div></header>
+    <section id="viewport" aria-label="Interactive 3D universe">
+      <div id="loading">Building your universe…</div>
+      <div id="labels" aria-hidden="true"></div>
+      <div class="scene-title"><span class="eyebrow">A LITTLE SPACE TO EXPERIMENT</span><h1>Your universe.<br>Your rules.</h1><p>Pick a world. Get closer. Make it yours.</p></div>
+      <div class="view-tools"><button id="home">All worlds</button><button id="top">Top view</button><button id="zoom-in" aria-label="Zoom in">＋</button><button id="zoom-out" aria-label="Zoom out">−</button></div>
+      <div id="view-caption">Drag to orbit · Scroll to zoom · Click a planet to select</div>
+    </section>
+    <aside class="panel" aria-label="Universe controls">
+      <div class="panel-heading"><span class="eyebrow">MISSION CONTROL</span><h2>Shape your space</h2></div>
+      <div class="row"><button id="pause" class="primary">Pause</button><button id="reset">Reset</button></div>
+      <label for="speed">Time speed <output id="speed-value">1×</output></label><input id="speed" type="range" min="0.1" max="4" step="0.1" value="1" />
+      <div class="checks"><label><input type="checkbox" id="trails" checked /> Orbit trails</label><label><input type="checkbox" id="show-labels" checked /> Names</label></div>
+      <section class="section"><div class="section-title"><h3>Your worlds</h3><span id="count"></span></div><div id="body-list" aria-label="Select a world"></div></section>
+      <section id="inspector" class="section" hidden>
+        <span class="eyebrow" id="type-label">SELECTED WORLD</span>
+        <form id="rename-form"><label for="planet-name">Planet name</label><div class="name-row"><input id="planet-name" maxlength="32" required autocomplete="off" /><button type="submit">Save</button></div></form>
+        <label for="edit-style">Surface</label><select id="edit-style"></select>
+        <div class="row"><button id="close-up" class="primary">Explore close-up</button><button id="destroy" class="danger">Destroy</button></div>
+        <p class="small" id="planet-info"></p>
+      </section>
+      <section class="section"><h3>Create a world</h3><label for="new-style">Planet type</label><select id="new-style"></select><button id="add" class="wide">＋ Add planet</button><p class="small">New worlds launch into a tilted orbit. Up to 24 planets.</p></section>
+      <div class="row"><button id="save-system">Save universe</button><button id="load-system">Load saved</button></div>
+      <p class="small">Saved on this browser only. Illustrative scale, not astronomical units.</p>
+    </aside>
+    <div id="toast" role="status" aria-live="polite"></div>
+    <dialog id="confirm-dialog"><form method="dialog"><span class="eyebrow">UNIVERSE CONTROL</span><h2 id="confirm-title"></h2><p id="confirm-copy"></p><div class="row"><button value="cancel">Cancel</button><button value="confirm" class="danger">Confirm</button></div></form></dialog>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
