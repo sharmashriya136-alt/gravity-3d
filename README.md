@@ -2,6 +2,8 @@
 
 A browser-based 3D orbital sandbox. Create textured planets, orbit the camera, explore up close, rename worlds, and destroy planets. Built with JavaScript, Three.js, and Vite. No backend, API keys, or external texture downloads are required at runtime.
 
+## VISIT THE SITE : https://sharmashriya136-alt.github.io/gravity-3d/
+
 ## Start in VS Code
 
 1. Install Node.js **22.12 or newer** from https://nodejs.org/ (a supported LTS version is recommended).
